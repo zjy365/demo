@@ -1,7 +1,9 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const request = axios.create({
-  baseURL: "/api",
+  baseURL: "/",
+  withCredentials: true,
+  timeout: 20 * 1000,
 });
 
 // Request interceptor
@@ -36,4 +38,32 @@ request.interceptors.response.use(
   },
 );
 
-export default request;
+export function GET<T = any>(
+  url: string,
+  data?: { [key: string]: any },
+  config?: AxiosRequestConfig,
+): Promise<T> {
+  return request.get(url, {
+    params: data,
+    ...config,
+  });
+}
+
+export function POST<T = any>(
+  url: string,
+  data?: { [key: string]: any },
+  config?: AxiosRequestConfig,
+): Promise<T> {
+  return request.post(url, data, config);
+}
+
+export function DELETE<T = any>(
+  url: string,
+  data?: { [key: string]: any },
+  config?: AxiosRequestConfig,
+): Promise<T> {
+  return request.get(url, {
+    params: data,
+    ...config,
+  });
+}
